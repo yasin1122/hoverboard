@@ -36,11 +36,14 @@ function handleTouchMove(event, element) {
   const touch = event.touches[0]
   const rect = element.getBoundingClientRect()
 
+  const touchX = touch.clientX
+  const touchY = touch.clientY
+
   if (
-    touch.clientX >= rect.left &&
-    touch.clientX <= rect.right &&
-    touch.clientY >= rect.top &&
-    touch.clientY <= rect.bottom
+    touchX >= rect.left &&
+    touchX <= rect.right &&
+    touchY >= rect.top &&
+    touchY <= rect.bottom
   ) {
     setColor(element)
   } else {
