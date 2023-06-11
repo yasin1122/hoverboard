@@ -2,16 +2,57 @@ const container = document.getElementById('container')
 const colors = ['#e74c3c', '#8e44ad', '#3498db', '#e67e22', '#2ecc71']
 const SQUARES = 500
 
+let isDragging = false
+
+container.addEventListener('mouseenter', () => {
+  isDragging = false
+})
+
+container.addEventListener('mouseleave', () => {
+  isDragging = false
+})
+
+container.addEventListener('mousedown', () => {
+  isDragging = true
+})
+
+container.addEventListener('mouseup', () => {
+  isDragging = false
+})
+
+container.addEventListener('mousemove', event => {
+  if (isDragging) {
+    const square = event.target
+    if (square && square.classList.contains('square')) {
+      setColor(square)
+    }
+  }
+})
+
+container.addEventListener('touchstart', () => {
+  isDragging = true
+})
+
+container.addEventListener('touchend', () => {
+  isDragging = false
+})
+
+container.addEventListener('touchmove', event => {
+  if (isDragging) {
+    const touch = event.touches[0]
+    const square = document.elementFromPoint(touch.clientX, touch.clientY)
+    if (square && square.classList.contains('square')) {
+      setColor(square)
+    }
+  }
+})
+
 for (let i = 0; i < SQUARES; i++) {
   const square = document.createElement('div')
   square.classList.add('square')
 
-  square.addEventListener('mouseover', () => setColor(square))
-  square.addEventListener('mouseout', () => removeColor(square))
-
-  square.addEventListener('touchstart', () => setColor(square))
-  square.addEventListener('touchmove', event => handleTouchMove(event, square))
-  square.addEventListener('touchend', () => removeColor(square))
+  square.addEventListener('mouseenter', () => setColor(square))
+  square.addEventListener('mouseleave', () => removeColor(square))
 
   container.appendChild(square)
 }
@@ -29,24 +70,4 @@ function removeColor(element) {
 
 function getRandomColor() {
   return colors[Math.floor(Math.random() * colors.length)]
-}
-
-function handleTouchMove(event, element) {
-  event.preventDefault()
-  const touch = event.touches[0]
-  const rect = element.getBoundingClientRect()
-
-  const touchX = touch.clientX
-  const touchY = touch.clientY
-
-  if (
-    touchX >= rect.left &&
-    touchX <= rect.right &&
-    touchY >= rect.top &&
-    touchY <= rect.bottom
-  ) {
-    setColor(element)
-  } else {
-    removeColor(element)
-  }
 }
