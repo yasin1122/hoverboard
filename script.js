@@ -7,8 +7,11 @@ for (let i = 0; i < SQUARES; i++) {
   square.classList.add('square')
 
   square.addEventListener('mouseover', () => setColor(square))
-
   square.addEventListener('mouseout', () => removeColor(square))
+
+  square.addEventListener('touchstart', () => setColor(square))
+  square.addEventListener('touchmove', event => handleTouchMove(event, square))
+  square.addEventListener('touchend', () => removeColor(square))
 
   container.appendChild(square)
 }
@@ -26,4 +29,21 @@ function removeColor(element) {
 
 function getRandomColor() {
   return colors[Math.floor(Math.random() * colors.length)]
+}
+
+function handleTouchMove(event, element) {
+  event.preventDefault()
+  const touch = event.touches[0]
+  const rect = element.getBoundingClientRect()
+
+  if (
+    touch.clientX >= rect.left &&
+    touch.clientX <= rect.right &&
+    touch.clientY >= rect.top &&
+    touch.clientY <= rect.bottom
+  ) {
+    setColor(element)
+  } else {
+    removeColor(element)
+  }
 }
