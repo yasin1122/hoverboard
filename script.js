@@ -61,6 +61,14 @@ function setColor(element) {
   const color = getRandomColor()
   element.style.background = color
   element.style.boxShadow = `0 0 2px ${color}, 0 0 10px ${color}`
+
+  if (!element.classList.contains('hovered')) {
+    element.classList.add('hovered')
+    setTimeout(() => {
+      removeColor(element)
+      element.classList.remove('hovered')
+    }, 5000) // Change the duration to 5 seconds (5000 milliseconds)
+  }
 }
 
 function removeColor(element) {
